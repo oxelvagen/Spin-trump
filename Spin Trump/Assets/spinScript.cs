@@ -17,7 +17,10 @@ public class spinScript : MonoBehaviour
     float currentRotation = 0;
     float WindupRotation = 0;
 
-
+    void Start()
+    {
+        highestSpeed = PlayerPrefs.GetFloat("highestSpeed", highestSpeed);
+    }
     public void onClick()
     {
         player.AddTorque(torque, ForceMode2D.Impulse);
@@ -41,6 +44,7 @@ public class spinScript : MonoBehaviour
         if (currentSpeed > highestSpeed)
         {
             highestSpeed = currentSpeed;
+            PlayerPrefs.SetFloat("highestSpeed", highestSpeed);
         }
     }
 }
