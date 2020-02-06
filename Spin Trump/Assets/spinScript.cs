@@ -50,7 +50,7 @@ public class spinScript : MonoBehaviour
             PlayerPrefs.SetFloat("highestSpeed", highestSpeed);
         }
         //Om hastigheten är tillräckligt hög så ska pratbubbla Help komma upp
-        if (currentSpeed <= 10)
+        if (currentSpeed >= 10)
         {
             image.enabled = true;
         }
