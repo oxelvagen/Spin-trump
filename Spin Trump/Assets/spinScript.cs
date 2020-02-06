@@ -5,27 +5,53 @@ using UnityEngine.UI;
 
 public class spinScript : MonoBehaviour
 {
-    public Rigidbody2D player;
-    public float torque = 1f;
 
     //initiera lite variabler
+
+    public Rigidbody2D player;
+
+    public float torque = 1f;
+
     public int spins = 0; //Totala antalet snurr
+
     public float currentSpeed = 0; //Akutell hastighet
-    public Image image; //Pratbubbla hjälp
+
+    public Image help; //Pratbubbla hjälp
+
+    private Image rend; //vindögd bild vid 100RPM
+
+    public Sprite trumpSprite, trumpvinogdSprite;//väljer mellan de olika
+
     public float highestSpeed = 0;
+
     float deltaRotation = 0;
+
     float currentRotation = 0;
+
     float WindupRotation = 0;
+
+    
+
+    public object Images { get; private set; }
+    
+
+    //------------------------------------------------------------------------------------------------
 
     void Start()
     {
-       //Sätter bilden gömd till hastihet har uppnåtts
-        image.enabled = false;
+       
+
+        gameObject.GetComponent<Image>().sprite = trumpSprite;
+        
+
+        help.enabled = false; //Sätter bilden gömd till hastihet har uppnåtts
         highestSpeed = PlayerPrefs.GetFloat("highestSpeed", highestSpeed);
+
     }
     public void onClick()
     {
         player.AddTorque(torque, ForceMode2D.Impulse);
+
     }
     void Update()
     {
@@ -39,9 +65,10 @@ public class spinScript : MonoBehaviour
         WindupRotation -= (deltaRotation);
 
         spins = (int)(WindupRotation / 360);
-        
 
-        //Sätt aktuell hastighet på spelaren
+
+        //Sätt aktuell hastighet på spelaren--------------------------------------------------------------
+
         currentSpeed = (player.angularVelocity * ((2 * Mathf.PI) / 60));
 
         if (currentSpeed > highestSpeed)
@@ -49,10 +76,27 @@ public class spinScript : MonoBehaviour
             highestSpeed = currentSpeed;
             PlayerPrefs.SetFloat("highestSpeed", highestSpeed);
         }
-        //Om hastigheten är tillräckligt hög så ska pratbubbla Help komma upp
-        if (currentSpeed >= 10)
+
+        //------------------------------------------------------------------------------------------------------
+        //Om hastigheten är tillräckligt hög så ska pratbubbla Help komma upp-----------------------------------
+
+        if (currentSpeed >= 50)
         {
-            image.enabled = true;
+            help.enabled = true;
         }
+        else
+            help.enabled = false;
+
+        //om hastighet över 100 byt sprite
+
+        if (currentSpeed >= 100)
+        {
+            gameObject.GetComponent<Image>().sprite = trumpvinogdSprite;
+        }
+        else
+            gameObject.GetComponent<Image>().sprite = trumpSprite;
+        
+        //-----------------------------------------------------------------------------------------------------------
     }
 }
+
